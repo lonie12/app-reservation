@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `voyage` ADD COLUMN `prise` INTEGER NOT NULL DEFAULT 0;

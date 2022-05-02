@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model FF {
+  id Int @id
+}
+
+model User {
+  id String @default(cuid()) @id
+  nom String?
+  prenom String?
+  email String?
+  password String @db.VarChar(255)
+  telephone String @db.VarChar(12)
+  logo String @db.Text
+  role String @default("isPublic")
+
+  reservations Reservation[]
+
+  voyages Voyage[]
+}
+
+model Reservation {
+  id String @default(cuid()) @id
+  date DateTime?
+  code String @db.Text
+  status Boolean @default(true)
+  nombre Int?
+
+  users User @relation(fields: [user], references: [id])
+  user String
+
+  voyages Voyage @relation(fields: [voyage], references: [id])
+  voyage String
+}
+
+model Voyage {
+  id String @default(cuid()) @id
+  date DateTime?
+  depart DateTime?
+  origine String?
+  destination String?
+  etat Boolean @default(true)
+  price Int?
+  arrive DateTime?
+  difference DateTime?
+  total Int?
+  prise Int @default(0)
+
+  reservations Reservation[]
+
+  users User @relation(fields: [user], references: [id])
+  user String 
+
+  // compagnies Compagnie @relation(fields: [compagnie], references: [id])
+  // compagnie String
+}
+
+// model Compagnie {
+//   id String @default(cuid()) @id
+//   nom String?
+//   email String?
+//   password String?
+//   role String @default("Company")
+
+//   voyages Voyage[]
+// }
